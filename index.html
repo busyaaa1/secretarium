@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>мои секреты</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=BBH+Sans+Hegarty&family=Caveat:wght@400..700&family=Comfortaa:wght@300..700&family=Dela+Gothic+One&family=Momo+Trust+Display&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(-45deg, #0a0e17, #1a0033, #0d1b2a, #1b263b);
+            background-size: 400% 400%;
+            animation: gradient 18s ease infinite;
+            color: #e0e0ff;
+            font-family: 'Comfortaa', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            height: 90vh;
+            background: rgba(15, 18, 30, 0.45);
+            border-radius: 20px;
+            border: 1px solid rgba(100, 120, 255, 0.25);
+            box-shadow:
+                0 25px 45px rgba(0, 0, 0, 0.4),
+                inset 0 0 30px rgba(100, 120, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Кнопка-триггер */
+        .secret-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: rgba(100, 120, 255, 0.25);
+            border: 1px solid rgba(100, 120, 255, 0.4);
+            border-radius: 50%;
+            color: #c0d6ff;
+            font-size: 28px;
+            cursor: pointer;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            transition: all 0.4s;
+        }
+
+        .secret-btn:hover {
+            background: rgba(100, 120, 255, 0.4);
+            transform: scale(1.15);
+            box-shadow: 0 0 25px rgba(100, 120, 255, 0.6);
+        }
+
+        /* Сайдбар */
+        .sidebar {
+            position: absolute;
+            top: 0;
+            right: -380px;
+            width: 360px;
+            height: 100%;
+            background: rgba(15, 18, 30, 0.55);
+            backdrop-filter: blur(20px);
+            border-left: 1px solid rgba(100, 120, 255, 0.2);
+            padding: 70px 20px 20px;
+            transition: right 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 99;
+            overflow-y: auto;
+        }
+
+        .sidebar.open {
+            right: 0;
+        }
+
+        .sidebar h2 {
+            color: #c0d6ff;
+            text-align: center;
+            font-family: 'Comfortaa', serif;
+            font-size: 1.9rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(100, 120, 255, 0.4);
+        }
+
+        .clear-all {
+            background: rgba(255, 70, 100, 0.25);
+            color: #ffb3b3;
+            border: 1px solid rgba(255, 70, 100, 0.3);
+            padding: 10px;
+            border-radius: 12px;
+            cursor: pointer;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            margin: 5px 0 20px;
+        }
+
+        .note {
+            background: rgba(20, 25, 45, 0.6);
+            border: 1px solid rgba(100, 120, 255, 0.3);
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .note:hover {
+            border-color: #6478ff;
+        }
+
+        .delete-note {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            background: rgba(255, 70, 70, 0.4);
+            color: #ff9999;
+            border: none;
+            width: 34px;
+            height: 34px;
+            font-size: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Основная зона */
+        .main {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 40px;
+            justify-content: center;
+        }
+
+        textarea {
+            width: 100%;
+            height: 60%;
+            background: rgba(20, 25, 45, 0.4);
+            border: 1px solid rgba(100, 120, 255, 0.3);
+            border-radius: 16px;
+            outline: none;
+            color: #e0e0ff;
+            font-family: 'Comfortaa', monospace;
+            font-size: 1.15rem;
+            padding: 20px;
+            resize: none;
+            backdrop-filter: blur(12px);
+        }
+
+        textarea::placeholder {
+            color: rgba(200, 210, 255, 0.6);
+        }
+
+        .controls {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        button.main-btn {
+            padding: 14px 36px;
+            background: rgba(100, 120, 255, 0.25);
+            color: #c0d6ff;
+            border: 1px solid rgba(100, 120, 255, 0.4);
+            border-radius: 16px;
+            cursor: pointer;
+            font-weight: 500;
+            backdrop-filter: blur(12px);
+            transition: 0.3s;
+        }
+
+        button.main-btn:hover {
+            background: rgba(100, 120, 255, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(100, 120, 255, 0.2);
+        }
+
+        button.main-btn.clear {
+            background: rgba(60, 60, 80, 0.3);
+            border-color: rgba(120, 120, 140, 0.4);
+        }
+
+        .counter {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: rgba(180, 190, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 480px) {
+            .sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <button class="secret-btn" id="toggleBtn">☾</button>
+
+        <div class="sidebar" id="sidebar">
+            <h2>мои секретики ♡</h2>
+            <button class="clear-all" onclick="clearAll()">удалить всё.. (╥﹏╥)</button>
+            <div id="notes-list"></div>
+        </div>
+
+        <div class="main">
+            <textarea id="noteInput"
+                placeholder="пиши сюда свои мыслишки, мечты, секретики... никто не увидит (*´∀｀*)"></textarea>
+
+            <div class="controls">
+                <button class="main-btn" onclick="saveNote()">сохранить в сердечко ♡</button>
+                <button class="main-btn clear" onclick="document.getElementById('noteInput').value=''">очистить
+                    (；ω；)</button>
+            </div>
+
+            <div class="counter">сохранено: <span id="count">0</span> штучек (*´ω｀*)</div>
+        </div>
+    </div>
+
+    <script>
+        const sidebar = document.getElementById('sidebar');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const noteInput = document.getElementById('noteInput');
+        const notesList = document.getElementById('notes-list');
+        const countSpan = document.getElementById('count');
+
+        toggleBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('open');
+            toggleBtn.textContent = sidebar.classList.contains('open') ? '♡' : '☾';
+            if (sidebar.classList.contains('open')) loadNotes();
+        });
+
+        function saveNote() {
+            const text = noteInput.value.trim();
+            if (!text) return alert("а где секретик?.. (´･ω･`)");
+
+            const notes = JSON.parse(localStorage.getItem('secretNotes') || '[]');
+            notes.push({
+                id: Date.now(),
+                text: text,
+                date: new Date().toLocaleString('ru-RU')
+            });
+
+            localStorage.setItem('secretNotes', JSON.stringify(notes));
+            noteInput.value = '';
+            updateCounter();
+            alert("секретик сохранён в моё сердечко! (*´▽`*)♡");
+        }
+
+        function loadNotes() {
+            notesList.innerHTML = '';
+            const notes = JSON.parse(localStorage.getItem('secretNotes') || '[]');
+
+            if (notes.length === 0) {
+                notesList.innerHTML = '<p style="text-align:center; color:rgba(255,255,255,0.7); margin-top:50px;">пока тут пусто.. напиши мне что-нибудь ♡(◕‿◕)</p>';
+                return;
+            }
+
+            notes.reverse().forEach(note => {
+                const div = document.createElement('div');
+                div.className = 'note';
+                div.innerHTML = `
+          <button class="delete-note" onclick="deleteNote(${note.id})">×</button>
+          <small>${note.date}</small><br><br>
+          ${note.text.replace(/\n/g, '<br>')}
+        `;
+                notesList.appendChild(div);
+            });
+        }
+
+        function deleteNote(id) {
+            let notes = JSON.parse(localStorage.getItem('secretNotes') || '[]');
+            notes = notes.filter(n => n.id !== id);
+            localStorage.setItem('secretNotes', JSON.stringify(notes));
+            loadNotes();
+            updateCounter();
+        }
+
+        function clearAll() {
+            if (confirm("точно-точно удалить ВСЁ?.. я буду грустить (╥ω╥)")) {
+                localStorage.removeItem('secretNotes');
+                loadNotes();
+                updateCounter();
+            }
+        }
+
+        function updateCounter() {
+            const notes = JSON.parse(localStorage.getItem('secretNotes') || '[]');
+            countSpan.textContent = notes.length;
+        }
+
+        updateCounter();
+    </script>
+</body>
+
+</html>
